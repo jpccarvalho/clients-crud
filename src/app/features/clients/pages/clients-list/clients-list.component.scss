@@ -1,0 +1,57 @@
+@use "@angular/material" as mat;
+
+:host {
+  @include mat.table-overrides(
+    (
+      background-color: white,
+      header-headline-color: black,
+    )
+  );
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-radius: 20;
+  top: 0;
+}
+
+.row {
+  button {
+    margin-left: auto;
+  }
+}
+
+.table-container {
+  padding: 0.33rem;
+  padding-right: 0;
+  border: solid 1px black;
+  border-radius: 12px;
+}
+
+.table-scroll-wrapper {
+  max-height: 800px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.actions-container {
+  button {
+    margin-left: 4px;
+  }
+}
+
+.mat-column-actions {
+  flex: 0 0 80px;
+  max-width: 80px;
+
+  button:not(:first-child) {
+    margin-left: 4px;
+  }
+}

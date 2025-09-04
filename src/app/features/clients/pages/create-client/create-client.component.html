@@ -1,0 +1,42 @@
+<mat-card>
+  <h2>New client</h2>
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="12" rowHeight="100px">
+      <mat-grid-tile [colspan]="12" [rowspan]="1">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="12" [rowspan]="1">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="12" [rowspan]="1">
+        <mat-form-field appearance="outline">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="telefone" />
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="12" [rowspan]="1">
+        <mat-form-field appearance="outline">
+          <mat-label>CPF</mat-label>
+          <input matInput formControlName="cpf" />
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="btn-row">
+      <button mat-raised-button type="button" routerLink="">Go back</button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="clientForm.invalid"
+      >
+        Create
+      </button>
+    </div>
+  </form>
+</mat-card>

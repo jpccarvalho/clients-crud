@@ -1,0 +1,29 @@
+:host {
+  padding: 1.5rem;
+  display: flex;
+
+  mat-card {
+    width: 100%;
+    flex: 1;
+    padding: 2rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+    padding: 4px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .submit-btn {
+    margin-left: auto;
+  }
+}
