@@ -21,7 +21,7 @@ export class CreateClientComponent implements OnInit {
 
   ngOnInit() {
     this.clientForm = this.fb.group({
-      name: ['', Validators.required],
+      nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefone: ['', Validators.required],
       cpf: ['', [Validators.required, Validators.minLength(11)]],
@@ -40,6 +40,7 @@ export class CreateClientComponent implements OnInit {
       this.clientsService.createClient(client).subscribe({
         next: (res) => {
           console.log('Cliente criado:', res);
+          
           this.router.navigate(['/clients']);
         },
         error: (err) => {
