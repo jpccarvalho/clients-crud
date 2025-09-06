@@ -44,7 +44,7 @@ export class UpdateClientComponent implements OnInit {
     });
   }
 
-  getClient(id: number) {
+  getClientFromAPI(id: number) {
     this.clientsService.getClientById(Number(id)).subscribe({
       next: (response) => {
         console.log('Cliente encontrado na API. Cliente: \n', response);
@@ -54,20 +54,24 @@ export class UpdateClientComponent implements OnInit {
       },
       error: (err) => {
         console.log('Cliente nao cadastrado na API. Erro: \n', err);
-        const auxClient = PersistenceMock.getClientById(id);
-
-        if (!auxClient) {
-          this.router.navigate(['/clients']);
-          this.isLoading = false;
-          return;
-        }
-
-        console.log('Cliente encontrado na storage. Cliente: \n', auxClient);
-        this.client = auxClient as Client;
-        this.fillForms(auxClient);
         this.isLoading = false;
+        this.router.navigate(['/clients']);
       },
     });
+  }
+
+  getClient(id: number) {
+    const auxClient = PersistenceMock.getClientById(id);
+
+    if (!auxClient) {
+      this.getClientFromAPI(id);
+      return;
+    }
+
+    console.log('Cliente encontrado na storage. Cliente: \n', auxClient);
+    this.client = auxClient as Client;
+    this.fillForms(auxClient);
+    this.isLoading = false;
   }
 
   fillForms(client: Client) {
