@@ -41,15 +41,8 @@ table {
   position: relative;
 }
 
-.actions-container {
-  button {
-    margin-left: 4px;
-  }
-}
-
 .mat-column-actions {
-  flex: 0 0 80px;
-  max-width: 80px;
+  width: 160px;
 
   button:not(:first-child) {
     margin-left: 4px;
