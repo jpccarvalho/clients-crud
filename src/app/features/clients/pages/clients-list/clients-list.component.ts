@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ClientsService } from '../../services/clients.service';
 import { Client } from '../../models';
+import { PersistenceMock } from '../../utils/persistence.mock';
 
 @Component({
   selector: 'app-clients-list',
@@ -9,7 +10,7 @@ import { Client } from '../../models';
   styleUrl: './clients-list.component.scss',
 })
 export class ClientsListComponent implements OnInit {
-  displayedColumns: string[] = [ 'name', 'email', 'cpf', 'phone', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'cpf', 'phone', 'actions'];
   clients = signal<Client[]>([]);
   constructor(private clientsService: ClientsService) {}
 
@@ -19,13 +20,16 @@ export class ClientsListComponent implements OnInit {
 
   getClients() {
     this.clientsService.getClients().subscribe((res) => {
-      this.clients.set(res);
+      const persistedClients = PersistenceMock.getClients(res);
+      this.clients.set(persistedClients);
     });
   }
-  deleteClients(id: number) {
-    this.clientsService.deleteClient(id).subscribe((res) => {
+  
+  deleteClients(clientId: number) {
+    PersistenceMock.deleteClient(clientId);
+    this.clientsService.deleteClient(clientId).subscribe((res) => {
       this.clients.update((clients) =>
-        clients.filter((client) => client.id !== id)
+        clients.filter((client) => client.id !== clientId)
       );
     });
   }
