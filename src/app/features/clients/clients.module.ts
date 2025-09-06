@@ -12,9 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CreateClientComponent } from './pages/create-client/create-client.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ClientDeleteConfirmationModal } from './components/client-delete-confirmation-modal/client-delete-confirmation-modal.component';
 
 @NgModule({
-  declarations: [ClientsListComponent, CreateClientComponent],
+  declarations: [
+    ClientsListComponent,
+    CreateClientComponent,
+    ClientDeleteConfirmationModal,
+  ],
   imports: [
     CommonModule,
     ClientsRoutingModule,
@@ -26,6 +32,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatInputModule,
     MatCardModule,
     MatGridListModule,
+    MatDialogModule,
   ],
 })
 export class ClientsModule {}

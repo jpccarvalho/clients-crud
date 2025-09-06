@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ClientsService } from '../../services/clients.service';
 import { Client } from '../../models';
 import { PersistenceMock } from '../../utils/persistence.mock';
+import { MatDialog } from '@angular/material/dialog';
+import { ClientDeleteConfirmationModal } from '../../components/client-delete-confirmation-modal/client-delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-clients-list',
@@ -12,7 +14,10 @@ import { PersistenceMock } from '../../utils/persistence.mock';
 export class ClientsListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'cpf', 'phone', 'actions'];
   clients = signal<Client[]>([]);
-  constructor(private clientsService: ClientsService) {}
+  constructor(
+    private clientsService: ClientsService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.getClients();
@@ -24,7 +29,20 @@ export class ClientsListComponent implements OnInit {
       this.clients.set(persistedClients);
     });
   }
-  
+
+  openClientDeleteDialog(client: Client): void {
+    const dialogRef = this.dialog.open(ClientDeleteConfirmationModal, {
+      width: '600px',
+      data: client,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteClients(client.id);
+      }
+    });
+  }
+
   deleteClients(clientId: number) {
     PersistenceMock.deleteClient(clientId);
     this.clientsService.deleteClient(clientId).subscribe((res) => {
