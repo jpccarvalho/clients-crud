@@ -17,6 +17,7 @@ import { ClientDeleteConfirmationModal } from './components/client-delete-confir
 import { UpdateClientComponent } from './pages/update-client/update-client.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMaskDirective, provideNgxMask, NgxMaskPipe } from 'ngx-mask';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { NgxMaskDirective, provideNgxMask, NgxMaskPipe } from 'ngx-mask';
     MatProgressSpinnerModule,
     NgxMaskDirective,
     NgxMaskPipe,
+    SharedModule
   ],
   providers: [provideNgxMask()],
 })

@@ -14,6 +14,8 @@ import { ClientDeleteConfirmationModal } from '../../components/client-delete-co
 export class ClientsListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'cpf', 'phone', 'actions'];
   clients = signal<Client[]>([]);
+  isLoading = signal<boolean>(true);
+
   constructor(
     private clientsService: ClientsService,
     private dialog: MatDialog
@@ -27,6 +29,7 @@ export class ClientsListComponent implements OnInit {
     this.clientsService.getClients().subscribe((res) => {
       const persistedClients = PersistenceMock.getClients(res);
       this.clients.set(persistedClients);
+      this.isLoading.set(false);
     });
   }
 
@@ -37,18 +40,25 @@ export class ClientsListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      if (!!result) {
         this.deleteClients(client.id);
       }
     });
   }
 
   deleteClients(clientId: number) {
+    this.isLoading.set(true);
     PersistenceMock.deleteClient(clientId);
-    this.clientsService.deleteClient(clientId).subscribe((res) => {
-      this.clients.update((clients) =>
-        clients.filter((client) => client.id !== clientId)
-      );
+    this.clientsService.deleteClient(clientId).subscribe({
+      next: (res) => {
+        this.clients.update((clients) =>
+          clients.filter((client) => client.id !== clientId)
+        );
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+      },
     });
   }
 }

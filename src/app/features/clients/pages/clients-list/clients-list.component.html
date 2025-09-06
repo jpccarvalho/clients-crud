@@ -1,6 +1,7 @@
 <div class="row">
   <h2>Clients listing</h2>
-  <button mat-flat-button routerLink="create">
+
+  <button mat-flat-button routerLink="create" *ngIf="!isLoading()">
     <mat-icon
       aria-hidden="false"
       aria-label="Add icon"
@@ -9,7 +10,9 @@
     Create user
   </button>
 </div>
-<div class="table-container">
+
+<loading-spinner [isLoading]="isLoading()" />
+<div class="table-container" *ngIf="!isLoading()">
   <div class="table-scroll-wrapper">
     <table mat-table [dataSource]="clients()" class="mat-elevation-z8">
       <ng-container matColumnDef="name">

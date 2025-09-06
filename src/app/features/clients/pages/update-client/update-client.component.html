@@ -1,8 +1,5 @@
 <mat-card>
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner />
-    <p>Carregando informações do usuário...</p>
-  </div>
+  <loading-spinner [isLoading]="isLoading" />
   <form [formGroup]="clientForm" *ngIf="!isLoading" (ngSubmit)="onSubmit()">
     <h2>Update client</h2>
     <mat-grid-list cols="12" rowHeight="100px">
