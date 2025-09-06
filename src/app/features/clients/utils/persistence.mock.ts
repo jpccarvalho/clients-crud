@@ -7,25 +7,44 @@ export class PersistenceMock {
       ? JSON.parse(storageString)
       : [];
 
-    const clientList = [...clientsInStorage, ...clientsFromAPI];
+    const uniqueClients = Array.from(
+      new Map(
+        [...clientsFromAPI, ...clientsInStorage].map((c) => [c.id, c])
+      ).values()
+    );
 
-    console.log(clientList);
-
-    return this.filterClientsToShow(clientList);
+    return this.filterClientsToShow(uniqueClients);
   }
 
-  public static createClient(client: Client) {
+  public static getClientById(id: number) {
     const storageString = localStorage.getItem('clientsStored');
     const clientsInStorage: Client[] = !!storageString
       ? JSON.parse(storageString)
       : [];
 
+    if (!clientsInStorage.length) return undefined;
+
+    return clientsInStorage.find((client) => client.id === id);
+  }
+
+  public static getCurrentId() {
+    const storageString = localStorage.getItem('currentId');
+    return !!storageString ? Number(storageString) : 20;
+  }
+
+  public static createClient(client: Client, replaceId: boolean = true) {
+    const storageString = localStorage.getItem('clientsStored');
+    const clientsInStorage: Client[] = !!storageString
+      ? JSON.parse(storageString)
+      : [];
+    const newId = replaceId ? this.getCurrentId() + 1 : client.id;
     const updatedClientsInStorage = JSON.stringify([
       ...clientsInStorage,
-      client,
+      { ...client, id: newId },
     ]);
 
     localStorage.setItem('clientsStored', updatedClientsInStorage);
+    localStorage.setItem('currentId', JSON.stringify(newId));
   }
 
   public static deleteClient(clientId: number) {
@@ -50,5 +69,18 @@ export class PersistenceMock {
     return clients
       .filter((client) => !deletedClients.includes(client.id))
       .sort((a, b) => a.nome.localeCompare(b.nome));
+  }
+
+  public static updateClient(updatedClient: Client) {
+    const storageString = localStorage.getItem('clientsStored');
+    const clientsInStorage: Client[] = !!storageString
+      ? JSON.parse(storageString)
+      : [];
+
+    const newClientsArray = clientsInStorage.map((client) =>
+      client.id === updatedClient.id ? updatedClient : client
+    );
+
+    localStorage.setItem('clientsStored', JSON.stringify(newClientsArray));
   }
 }

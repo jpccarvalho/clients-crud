@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Client, CreateClientDto, UpdateClientDto } from '../models';
+import { Client, ClientDto } from '../models';
 import { environment } from '../../../../environments/environment.development';
 import { Observable } from 'rxjs';
 
@@ -23,11 +23,11 @@ export class ClientsService {
     return this.httpClient.delete<{}>(this.apiUrl + `/${id}`);
   }
 
-  createClient(body: CreateClientDto) {
+  createClient(body: ClientDto) {
     return this.httpClient.post(this.apiUrl, body);
   }
 
-  updateClient(id: number, body: UpdateClientDto) {
+  updateClient(id: number, body: ClientDto) {
     return this.httpClient.put(this.apiUrl + `/${id}`, body);
   }
 }

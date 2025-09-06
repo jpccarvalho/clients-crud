@@ -1,0 +1,41 @@
+:host {
+  padding: 1.5rem;
+  display: flex;
+
+  .loading-container {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+
+    p {
+      font-size: 24px;
+    }
+  }
+
+  mat-card {
+    width: 100%;
+    flex: 1;
+    padding: 2rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+    padding: 4px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .submit-btn {
+    margin-left: auto;
+  }
+}

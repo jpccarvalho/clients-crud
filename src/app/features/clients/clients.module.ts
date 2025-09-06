@@ -14,12 +14,16 @@ import { CreateClientComponent } from './pages/create-client/create-client.compo
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ClientDeleteConfirmationModal } from './components/client-delete-confirmation-modal/client-delete-confirmation-modal.component';
+import { UpdateClientComponent } from './pages/update-client/update-client.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMaskDirective, provideNgxMask, NgxMaskPipe } from 'ngx-mask';
 
 @NgModule({
   declarations: [
     ClientsListComponent,
     CreateClientComponent,
     ClientDeleteConfirmationModal,
+    UpdateClientComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +37,10 @@ import { ClientDeleteConfirmationModal } from './components/client-delete-confir
     MatCardModule,
     MatGridListModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
+  providers: [provideNgxMask()],
 })
 export class ClientsModule {}
