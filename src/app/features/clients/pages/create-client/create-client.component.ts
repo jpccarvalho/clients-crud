@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Client, CreateClientDto } from '../../models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Client, ClientDto } from '../../models';
 import { Router } from '@angular/router';
 import { ClientsService } from '../../services/clients.service';
+import { PersistenceMock } from '../../utils/persistence.mock';
 
 @Component({
   selector: 'app-client-form',
@@ -11,7 +12,7 @@ import { ClientsService } from '../../services/clients.service';
   styleUrls: ['./create-client.component.scss'],
 })
 export class CreateClientComponent implements OnInit {
-  clientForm: any;
+  clientForm: FormGroup = new FormGroup({});
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +32,7 @@ export class CreateClientComponent implements OnInit {
   onSubmit() {
     if (this.clientForm.valid) {
       const now = new Date().toISOString();
-      const client: CreateClientDto = {
+      const client: ClientDto = {
         ...this.clientForm.value,
         dataCriacao: now,
         dataAtualizacao: now,
@@ -40,7 +41,7 @@ export class CreateClientComponent implements OnInit {
       this.clientsService.createClient(client).subscribe({
         next: (res) => {
           console.log('Cliente criado:', res);
-          
+          PersistenceMock.createClient(res as Client);
           this.router.navigate(['/clients']);
         },
         error: (err) => {
