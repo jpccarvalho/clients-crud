@@ -1,7 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { merge } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 
@@ -11,9 +10,10 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup = new FormGroup({});
   hide = signal(true);
+  private subscriptions = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -39,14 +39,20 @@ export class LoginComponent implements OnInit {
         ...this.loginForm.value,
       };
 
-      this.authService.login(credentials).subscribe({
-        next: () => {
-          this.router.navigate(['/clients']);
-        },
-        error: (err) => {
-          console.warn(err);
-        },
-      });
+      this.subscriptions.add(
+        this.authService.login(credentials).subscribe({
+          next: () => {
+            this.router.navigate(['/clients']);
+          },
+          error: (err) => {
+            console.warn(err);
+          },
+        })
+      );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

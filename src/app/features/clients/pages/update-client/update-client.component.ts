@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientsService } from '../../services/clients.service';
-import { Client, ClientDto } from '../../models';
+import { Client } from '../../models';
 import { PersistenceMock } from '../../utils/persistence.mock';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-client',
@@ -11,10 +12,11 @@ import { PersistenceMock } from '../../utils/persistence.mock';
   templateUrl: './update-client.component.html',
   styleUrls: ['./update-client.component.scss'],
 })
-export class UpdateClientComponent implements OnInit {
+export class UpdateClientComponent implements OnInit, OnDestroy {
   client!: Client;
   clientForm: FormGroup = new FormGroup({});
   isLoading = true;
+  private subscriptions = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -45,19 +47,21 @@ export class UpdateClientComponent implements OnInit {
   }
 
   getClientFromAPI(id: number) {
-    this.clientsService.getClientById(Number(id)).subscribe({
-      next: (response) => {
-        console.log('Cliente encontrado na API. Cliente: \n', response);
-        this.client = response;
-        this.fillForms(response);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.log('Cliente nao cadastrado na API. Erro: \n', err);
-        this.isLoading = false;
-        this.router.navigate(['/clients']);
-      },
-    });
+    this.subscriptions.add(
+      this.clientsService.getClientById(Number(id)).subscribe({
+        next: (response) => {
+          console.log('Cliente encontrado na API. Cliente: \n', response);
+          this.client = response;
+          this.fillForms(response);
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.log('Cliente nao cadastrado na API. Erro: \n', err);
+          this.isLoading = false;
+          this.router.navigate(['/clients']);
+        },
+      })
+    );
   }
 
   getClient(id: number) {
@@ -86,20 +90,25 @@ export class UpdateClientComponent implements OnInit {
         dataAtualizacao: now,
         id: this.client.id,
       };
+      this.subscriptions.add(
+        this.clientsService.updateClient(this.client.id, client).subscribe({
+          next: (res) => {
+            console.log('Cliente editado:', res);
+            PersistenceMock.createClient(res as Client, false);
+            this.router.navigate(['/clients']);
+          },
+          error: (err) => {
+            console.error('Erro ao editar cliente na API:', err);
 
-      this.clientsService.updateClient(this.client.id, client).subscribe({
-        next: (res) => {
-          console.log('Cliente editado:', res);
-          PersistenceMock.createClient(res as Client, false);
-          this.router.navigate(['/clients']);
-        },
-        error: (err) => {
-          console.error('Erro ao editar cliente na API:', err);
-
-          PersistenceMock.updateClient(client);
-          this.router.navigate(['/clients']);
-        },
-      });
+            PersistenceMock.updateClient(client);
+            this.router.navigate(['/clients']);
+          },
+        })
+      );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

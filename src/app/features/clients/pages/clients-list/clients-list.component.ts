@@ -1,9 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ClientsService } from '../../services/clients.service';
 import { Client } from '../../models';
 import { PersistenceMock } from '../../utils/persistence.mock';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientDeleteConfirmationModal } from '../../components/client-delete-confirmation-modal/client-delete-confirmation-modal.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-clients-list',
@@ -11,10 +12,11 @@ import { ClientDeleteConfirmationModal } from '../../components/client-delete-co
   templateUrl: './clients-list.component.html',
   styleUrl: './clients-list.component.scss',
 })
-export class ClientsListComponent implements OnInit {
+export class ClientsListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'email', 'cpf', 'phone', 'actions'];
   clients = signal<Client[]>([]);
   isLoading = signal<boolean>(true);
+  private subscriptions = new Subscription();
 
   constructor(
     private clientsService: ClientsService,
@@ -38,27 +40,33 @@ export class ClientsListComponent implements OnInit {
       width: '600px',
       data: client,
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!!result) {
-        this.deleteClients(client.id);
-      }
-    });
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (!!result) {
+          this.deleteClients(client.id);
+        }
+      })
+    );
   }
 
   deleteClients(clientId: number) {
     this.isLoading.set(true);
     PersistenceMock.deleteClient(clientId);
-    this.clientsService.deleteClient(clientId).subscribe({
-      next: (res) => {
-        this.clients.update((clients) =>
-          clients.filter((client) => client.id !== clientId)
-        );
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        this.isLoading.set(false);
-      },
-    });
+    this.subscriptions.add(
+      this.clientsService.deleteClient(clientId).subscribe({
+        next: (res) => {
+          this.clients.update((clients) =>
+            clients.filter((client) => client.id !== clientId)
+          );
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+        },
+      })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe(); // Finalize todas as subscriptions
   }
 }
