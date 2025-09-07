@@ -2,19 +2,19 @@
   <h2>New client</h2>
   <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="12" rowHeight="100px">
-      <mat-grid-tile [colspan]="12" [rowspan]="1">
+      <mat-grid-tile [colspan]="6" [rowspan]="1">
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
           <input matInput formControlName="nome" />
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="12" [rowspan]="1">
+      <mat-grid-tile [colspan]="6" [rowspan]="1">
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" />
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="12" [rowspan]="1">
+      <mat-grid-tile [colspan]="6" [rowspan]="1">
         <mat-form-field appearance="outline">
           <mat-label>Telefone</mat-label>
           <input
@@ -24,7 +24,7 @@
           />
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile [colspan]="12" [rowspan]="1">
+      <mat-grid-tile [colspan]="6" [rowspan]="1">
         <mat-form-field appearance="outline">
           <mat-label>CPF</mat-label>
           <input matInput formControlName="cpf" mask="000.000.000-00" />

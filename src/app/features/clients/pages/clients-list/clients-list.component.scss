@@ -1,55 +1,60 @@
 @use "@angular/material" as mat;
 
-:host {
-  @include mat.table-overrides(
-    (
-      background-color: white,
-      header-headline-color: black,
-    )
-  );
-}
+// :host {
+//   @include mat.table-overrides(
+//     (
+//       background-color: white,
+//     )
+//   );
+// }
 
 :host {
   display: flex;
   flex-direction: column;
   padding-inline: 1.5rem;
-}
 
-table {
-  width: 100%;
-  border-radius: 20;
-  top: 0;
-}
+  .row {
+    margin-bottom: 12px;
+    span {
+      font-size: 24px;
+    }
 
-.row {
-  margin-bottom: 12px;
-  span{
-    font-size: 24px;
+    button {
+      margin-left: auto;
+    }
   }
 
-  button {
-    margin-left: auto;
-  }
-}
+  .table-container {
+    padding: 0.33rem;
+    padding-right: 0;
+    border: solid 1px black;
+    border-radius: 12px;
+    background-color: #faf9fd;
 
-.table-container {
-  padding: 0.33rem;
-  padding-right: 0;
-  border: solid 1px black;
-  border-radius: 12px;
-}
+    .table-scroll-wrapper {
+      max-height: 800px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
 
-.table-scroll-wrapper {
-  max-height: 800px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-}
+      table {
+        width: 100%;
+        border-radius: 20;
+        top: 0;
 
-.mat-column-actions {
-  width: 120px;
+        .mat-header-row {
+          background-color: #1976d2;
+          color: white;
+        }
 
-  button:not(:first-child) {
-    margin-left: 4px;
+        .mat-column-actions {
+          width: 120px;
+
+          button:not(:first-child) {
+            margin-left: 4px;
+          }
+        }
+      }
+    }
   }
 }

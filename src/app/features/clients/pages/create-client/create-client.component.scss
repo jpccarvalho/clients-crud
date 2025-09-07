@@ -6,24 +6,27 @@
     width: 100%;
     flex: 1;
     padding: 2rem;
-  }
+    border-top: 5px #1e293b solid;
+    border-radius: 6px;
 
-  mat-form-field {
-    width: 100%;
-    padding: 4px;
-  }
+    form {
+      display: flex;
+      flex-direction: column;
 
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  .btn-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+      mat-form-field {
+        width: 100%;
+        padding: 4px;
+      }
 
-  .submit-btn {
-    margin-left: auto;
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        .submit-btn {
+          margin-left: auto;
+        }
+      }
+    }
   }
 }
