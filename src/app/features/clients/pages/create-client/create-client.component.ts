@@ -43,7 +43,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.clientsService.createClient(client).subscribe({
           next: (res) => {
-            console.log('Cliente criado:', res);
             PersistenceMock.createClient(res as Client);
             this.router.navigate(['/clients']);
           },

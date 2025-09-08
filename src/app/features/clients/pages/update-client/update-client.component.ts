@@ -50,13 +50,11 @@ export class UpdateClientComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.clientsService.getClientById(Number(id)).subscribe({
         next: (response) => {
-          console.log('Cliente encontrado na API. Cliente: \n', response);
           this.client = response;
           this.fillForms(response);
           this.isLoading = false;
         },
         error: (err) => {
-          console.log('Cliente nao cadastrado na API. Erro: \n', err);
           this.isLoading = false;
           this.router.navigate(['/clients']);
         },
@@ -72,7 +70,6 @@ export class UpdateClientComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Cliente encontrado na storage. Cliente: \n', auxClient);
     this.client = auxClient as Client;
     this.fillForms(auxClient);
     this.isLoading = false;
@@ -93,7 +90,6 @@ export class UpdateClientComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.clientsService.updateClient(this.client.id, client).subscribe({
           next: (res) => {
-            console.log('Cliente editado:', res);
             PersistenceMock.createClient(res as Client, false);
             this.router.navigate(['/clients']);
           },
