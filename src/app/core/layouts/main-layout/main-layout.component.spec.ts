@@ -11,6 +11,7 @@ import { provideRouter, RouterOutlet } from '@angular/router';
 describe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
   let fixture: ComponentFixture<MainLayoutComponent>;
+  let authService: AuthService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,10 +27,19 @@ describe('MainLayoutComponent', () => {
 
     fixture = TestBed.createComponent(MainLayoutComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should logout through service when handleLogout is called', () => {
+    const logoutSpy = spyOn(authService, 'logout');
+
+    component.handleLogout();
+
+    expect(logoutSpy).toHaveBeenCalled();
   });
 });
