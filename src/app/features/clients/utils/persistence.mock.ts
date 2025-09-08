@@ -44,7 +44,7 @@ export class PersistenceMock {
     ]);
 
     localStorage.setItem('clientsStored', updatedClientsInStorage);
-    localStorage.setItem('currentId', JSON.stringify(newId));
+    if (replaceId) localStorage.setItem('currentId', JSON.stringify(newId));
   }
 
   public static deleteClient(clientId: number) {
