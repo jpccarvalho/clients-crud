@@ -67,6 +67,6 @@ export class ClientsListComponent implements OnInit, OnDestroy {
     );
   }
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe(); // Finalize todas as subscriptions
+    this.subscriptions.unsubscribe();
   }
 }
