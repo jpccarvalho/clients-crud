@@ -12,6 +12,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [LoadingSpinnerComponent],
@@ -28,8 +29,8 @@ import { MatTableModule } from '@angular/material/table';
     MatCardModule,
     MatGridListModule,
     MatDialogModule,
-    MatProgressSpinnerModule,
     NgxMaskDirective,
+    MatToolbarModule,
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -44,8 +45,8 @@ import { MatTableModule } from '@angular/material/table';
     MatCardModule,
     MatGridListModule,
     MatDialogModule,
-    MatProgressSpinnerModule,
     NgxMaskDirective,
+    MatToolbarModule,
   ],
   providers: [provideNgxMask()],
 })
